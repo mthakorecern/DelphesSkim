@@ -3,7 +3,7 @@ from sys import argv
 
 from variables import newVariables
 
-nEvents_max = 10
+nEvents_max = -1
 nVariables = set()
 
 filename, outputFileName, inputFileNames = argv                     # "vbfHmm_powheg", "DYToLL_madgraphMLM"
