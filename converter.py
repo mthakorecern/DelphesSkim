@@ -39,7 +39,7 @@ for oldVariable in newVariables:
 
     ## Define DiMuon mass ##
 ROOT.gInterpreter.Declare(InvariantMass_code) ## compile invariant mass code
-df_out = df_out.Define("DiMuon_mass", "InvariantMass( MuonTight_pt[0], MuonTight_eta[0], MuonTight_phi[0], 0.106,  MuonTight_pt[1], MuonTight_eta[1], MuonTight_phi[1], 0.106)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
+df_out = df_out.Define("DiMuon_mass", "InvariantMass( Muon_pt[0], Muon_eta[0], Muon_phi[0], 0.106,  Muon_pt[1], Muon_eta[1], Muon_phi[1], 0.106)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
     ###
 df_out = df_out.Define("DiJet_mass", "InvariantMass( Jet_pt[0], Jet_eta[0], Jet_phi[0], Jet_mass[0],  Jet_pt[1], Jet_eta[1], Jet_phi[1], Jet_mass[1] )")
 
@@ -47,11 +47,10 @@ df_out = df_out.Define("DiJet_mass", "InvariantMass( Jet_pt[0], Jet_eta[0], Jet_
 counter = df_out.Histo1D(("processedEvents", "processedEvents", 1, -100000,100000), "MuonTight_size")
 
     ## Cuts ##
-df_out = df_out.Filter("MuonTight_size >= 2") #require at least two muon
-counter_1 = df_out.Histo1D(("filteredEvents", "filteredEvents", 1, -100000,100000), "MuonTight_size")
+
  
-df_out = df_out.Filter("MuonTight_pt[0] > 20 && MuonTight_pt[1] > 20")
-df_out = df_out.Filter("abs(MuonTight_eta[0]) < 2.8 && abs(MuonTight_eta[1]) < 2.8") #require the first muon to have pt>50 GeV
+df_out = df_out.Filter("Muon_pt[0] > 20 && Muon_pt[1] > 20")
+df_out = df_out.Filter("abs(Muon_eta[0]) < 2.8 && abs(Muon_eta[1]) < 2.8") #require the first muon to have pt>50 GeV
 df_out = df_out.Filter("DiMuon_mass > 110 && DiMuon_mass < 150") #require at least two muon
 
     #df_out = df_out.Filter("Jet_size >= 2")
@@ -60,7 +59,10 @@ df_out = df_out.Filter("abs(Jet_eta[0]) < 4.7 && abs(Jet_eta[1]) < 4.7")
 df_out = df_out.Filter("abs(Jet_eta[0] - Jet_eta[1]) < 2.5 ")
 df_out = df_out.Filter("DiJet_mass > 400")
 
-hist = df_out.Histo1D("MuonTight_pt")
+df_out = df_out.Filter("MuonTight_size >= 2") #require at least two muon
+counter_1 = df_out.Histo1D(("filteredEvents", "filteredEvents", 1, -100000,100000), "MuonTight_size")
+
+hist = df_out.Histo1D("Muon_pt")
 print("Launch Snapshot")
 df_out.Snapshot("Events", "%s_%d.root"%(sampleName, index), nVariables)
 
