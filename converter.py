@@ -1,13 +1,13 @@
 import ROOT
+from sys import argv
 
-from samples import *
-from variables import *
+from variables import newVariables
 
-nEvents_max = -1
+nEvents_max = 10
 nVariables = set()
 
-filename, sampleName, index = argv                     # "vbfHmm_powheg", "DYToLL_madgraphMLM"
-index = int(index, 10)
+filename, outputFileName, inputFileNames = argv                     # "vbfHmm_powheg", "DYToLL_madgraphMLM"
+inputFileNames = inputFileNames.split(",")
 
 InvariantMass_code ='''
 float InvariantMass (float pt1, float eta1, float phi1, float mass1, float pt2, float eta2, float phi2, float mass2)
@@ -20,18 +20,16 @@ float InvariantMass (float pt1, float eta1, float phi1, float mass1, float pt2, 
 }
 '''
 
-print("Running sample: %s"%sampleName)
+print("Running sample: %s"%outputFileName)
+fnames = ROOT.std.vector('string')()
+for n in inputFileNames: fnames.push_back(n)
+df = ROOT.RDataFrame("Delphes", fnames)
 
-for dataset_ in samples[sampleName]:
-    dataset = dataset_%index
-    print("Running dataset: %s"%dataset)
-    df = ROOT.RDataFrame("Delphes", dataset)
+if nEvents_max>0:
+    print("I'm running on %d events"%nEvents_max)
+    df = df.Range(0, nEvents_max)
 
-    if nEvents_max>0:
-        print("I'm running on %d events"%nEvents_max)
-        df = df.Range(0, nEvents_max)
-
-    df_out = df.Define("sum_size", "MuonTight_size+Jet_size")
+df_out = df.Define("sum_size", "MuonTight_size+Jet_size")
 
 for oldVariable in newVariables:
     df_out = df_out.Define(newVariables[oldVariable], oldVariable)
@@ -49,6 +47,7 @@ counter = df_out.Histo1D(("processedEvents", "processedEvents", 1, -100000,10000
     ## Cuts ##
 
  
+df_out = df_out.Filter("MuonTight_size >= 2") #require at least two muon
 df_out = df_out.Filter("Muon_pt[0] > 20 && Muon_pt[1] > 20")
 df_out = df_out.Filter("abs(Muon_eta[0]) < 2.8 && abs(Muon_eta[1]) < 2.8") #require the first muon to have pt>50 GeV
 df_out = df_out.Filter("DiMuon_mass > 110 && DiMuon_mass < 150") #require at least two muon
@@ -59,18 +58,17 @@ df_out = df_out.Filter("abs(Jet_eta[0]) < 4.7 && abs(Jet_eta[1]) < 4.7")
 df_out = df_out.Filter("abs(Jet_eta[0] - Jet_eta[1]) < 2.5 ")
 df_out = df_out.Filter("DiJet_mass > 400")
 
-df_out = df_out.Filter("MuonTight_size >= 2") #require at least two muon
 counter_1 = df_out.Histo1D(("filteredEvents", "filteredEvents", 1, -100000,100000), "MuonTight_size")
 
 hist = df_out.Histo1D("Muon_pt")
 print("Launch Snapshot")
-df_out.Snapshot("Events", "%s_%d.root"%(sampleName, index), nVariables)
+df_out.Snapshot("Events", "%s"%outputFileName, nVariables)
+print("Snapshot done")
 
-file = ROOT.TFile("%s_%d.root"%(sampleName, index),"update")
+file = ROOT.TFile("%s"%outputFileName,"update")
 counter.Write()
 counter_1.Write()
 file.Close()
 
-
-print("Finished dataset %s"%dataset)
-print("Finished sample %s"%sampleName)
+print("Finished files: %s"%inputFileNames)
+print("Finished sample %s"%outputFileName)
