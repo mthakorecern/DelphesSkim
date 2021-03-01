@@ -17,5 +17,5 @@ token
 echo "Check xrootd", root -b -l -q  root://eoscms.cern.ch//store/group/upgrade/delphes_output/YR_Delphes/Delphes342pre14/VBFHToMuMu_M125_14TeV_powheg_pythia8_200PU/VBFHToMuMu_M125_14TeV_powheg_pythia8_1.root -e 'Delphes->Draw("","")'
 root -b -l -q  root://eoscms.cern.ch//store/group/upgrade/delphes_output/YR_Delphes/Delphes342pre14/VBFHToMuMu_M125_14TeV_powheg_pythia8_200PU/VBFHToMuMu_M125_14TeV_powheg_pythia8_1.root -e 'Delphes->Draw("","")'
 
-echo python3.8 converter.py $1 $2 
+echo python3.8 converter.py  $1 $2
 python3.8 converter.py $1 $2

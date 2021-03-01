@@ -1,13 +1,19 @@
 import ROOT
 from sys import argv
-
+import os
+filename, outputFileName, inputFileName = argv                      # "vbfHmm_powheg", "DYToLL_madgraphMLM"
 from variables import newVariables
+
+#inputFileNames = open("%s"%inputFileName, "r")
+#inputFileNames.read()
+#inputFileNames = inputFileNames.split("\n")
+
+with open("%s"%inputFileName, "r") as f:
+    inputFileNames = list(f)
 
 nEvents_max = -1
 nVariables = set()
 
-filename, outputFileName, inputFileNames = argv                     # "vbfHmm_powheg", "DYToLL_madgraphMLM"
-inputFileNames = inputFileNames.split(",")
 
 InvariantMass_code ='''
 float InvariantMass (float pt1, float eta1, float phi1, float mass1, float pt2, float eta2, float phi2, float mass2)
@@ -22,7 +28,11 @@ float InvariantMass (float pt1, float eta1, float phi1, float mass1, float pt2, 
 
 print("Running sample: %s"%outputFileName)
 fnames = ROOT.std.vector('string')()
-for n in inputFileNames: fnames.push_back(n)
+for n in inputFileNames: 
+    n = n.replace("\n","").replace(" ","")
+    fnames.push_back(n)
+#    print(n)
+
 df = ROOT.RDataFrame("Delphes", fnames)
 
 if nEvents_max>0:

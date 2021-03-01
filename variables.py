@@ -67,6 +67,17 @@ newVariables = {
 "Jet.Eta": "Jet_eta",
 "Jet.Phi": "Jet_phi",
 "Jet.Mass": "Jet_mass",
+"Jet.T": "Jet_t",
+"Jet.Flavor": "Jet_flavour",
+"Jet.FlavorAlgo": "Jet_flavoralgo",
+"Jet.FlavorPhys": "Jet_flavorphys",
+"Jet.BTag": "Jet_btag",
+"Jet.BTagAlgo": "Jet_btagalgo",
+"Jet.BTagPhys": "Jet_btagphys",
+"Jet.EhadOverEem": "Jet_hoe",
+"Jet.NCharged": "Jet_ncharged",
+"Jet.NNeutrals": "Jet_nneutrals",
+
 
 "Electron.PT": "Electron_pt",
 "Electron.Eta": "Electron_eta",
@@ -80,5 +91,7 @@ newVariables = {
 "Electron.SumPtNeutral": "Electron_sumptneutral",
 "Electron.SumPtChargedPU": "Electron_sumptchargedpu",
 "Electron.SumPt": "Electron_sumpt",
+
+"Vertex_size": "Vertex_size"
 
 }
