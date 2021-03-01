@@ -8,7 +8,7 @@ from samples import samples
 
 schedd = htcondor.Schedd()          # get the Python representation of the scheduler
 
-nfilesPerJob = 1000
+nfilesPerJob = 2000
 
 os.system("cp converter.py %s"%prod)
 os.system("cp variables.py %s"%prod)
