@@ -1,5 +1,5 @@
 import os
-prod = "PROD_2_3"
+prod = "PROD_2_2"
 os.mkdir(prod)
 
 import htcondor  # for submitting jobs, querying HTCondor daemons, etc.
