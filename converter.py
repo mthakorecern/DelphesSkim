@@ -51,8 +51,8 @@ df_out = df_out.Define("DiMuon_mass", "InvariantMass( Muon_pt[0], Muon_eta[0], M
     ###
 df_out = df_out.Define("DiJet_mass", "InvariantMass( Jet_pt[0], Jet_eta[0], Jet_phi[0], Jet_mass[0],  Jet_pt[1], Jet_eta[1], Jet_phi[1], Jet_mass[1] )")
 
-
 counter = df_out.Histo1D(("processedEvents", "processedEvents", 1, -100000,100000), "MuonTight_size")
+vertex = df_out.Histo1D(("Vertex_size", "Vertex_size", 1, -100000,100000), "Vertex_size")
 
     ## Cuts ##
 
@@ -65,7 +65,7 @@ df_out = df_out.Filter("DiMuon_mass > 110 && DiMuon_mass < 150") #require at lea
     #df_out = df_out.Filter("Jet_size >= 2")
 df_out = df_out.Filter("Jet_pt[0] > 35 && Jet_pt[1] > 25")
 df_out = df_out.Filter("abs(Jet_eta[0]) < 4.7 && abs(Jet_eta[1]) < 4.7")
-df_out = df_out.Filter("abs(Jet_eta[0] - Jet_eta[1]) < 2.5 ")
+df_out = df_out.Filter("abs(Jet_eta[0] - Jet_eta[1]) > 2.5")
 df_out = df_out.Filter("DiJet_mass > 400")
 
 counter_1 = df_out.Histo1D(("filteredEvents", "filteredEvents", 1, -100000,100000), "MuonTight_size")
@@ -78,6 +78,7 @@ print("Snapshot done")
 file = ROOT.TFile("%s"%outputFileName,"update")
 counter.Write()
 counter_1.Write()
+vertex.Write()
 file.Close()
 
 print("Finished files: %s"%inputFileNames)

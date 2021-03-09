@@ -92,6 +92,36 @@ newVariables = {
 "Electron.SumPtChargedPU": "Electron_sumptchargedpu",
 "Electron.SumPt": "Electron_sumpt",
 
-"Vertex_size": "Vertex_size"
+"ScalarHT.HT": "ScalarHT_ht",
+
+"GenJet.PT": "GenJet_pt",
+"GenJet.Eta": "GenJet_eta",
+"GenJet.Phi": "GenJet_phi",
+"GenJet.Mass": "GenJet_mass",
+"GenJet.T": "GenJet_t",
+"GenJet.Flavor": "GenJet_flavour",
+"GenJet.FlavorAlgo": "GenJet_flavoralgo",
+"GenJet.FlavorPhys": "GenJet_flavorphys",
+"GenJet.BTag": "GenJet_btag",
+"GenJet.BTagAlgo": "GenJet_btagalgo",
+"GenJet.BTagPhys": "GenJet_btagphys",
+"GenJet.EhadOverEem": "GenJet_hoe",
+"GenJet.NCharged": "GenJet_ncharged",
+"GenJet.NNeutrals": "GenJet_nneutrals",
+
+"JetPUPPI.PT": "JetPUPPI_pt",
+"JetPUPPI.Eta": "JetPUPPI_eta",
+"JetPUPPI.Phi": "JetPUPPI_phi",
+"JetPUPPI.Mass": "JetPUPPI_mass",
+"JetPUPPI.T": "JetPUPPI_t",
+"JetPUPPI.Flavor": "JetPUPPI_flavour",
+"JetPUPPI.FlavorAlgo": "JetPUPPI_flavoralgo",
+"JetPUPPI.FlavorPhys": "JetPUPPI_flavorphys",
+"JetPUPPI.BTag": "JetPUPPI_btag",
+"JetPUPPI.BTagAlgo": "JetPUPPI_btagalgo",
+"JetPUPPI.BTagPhys": "JetPUPPI_btagphys",
+"JetPUPPI.EhadOverEem": "JetPUPPI_hoe",
+"JetPUPPI.NCharged": "JetPUPPI_ncharged",
+"JetPUPPI.NNeutrals": "JetPUPPI_nneutrals",
 
 }
