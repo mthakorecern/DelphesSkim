@@ -30,11 +30,13 @@ float InvariantMass (float pt1, float eta1, float phi1, float mass1, float pt2, 
 
 InvariantMassVect_code ='''
 float InvariantMassVect (const ROOT::RVec<float>& pt, const ROOT::RVec<float>&  eta, const ROOT::RVec<float>& phi, const float mass, const ROOT::RVec<float>&  charge, int nmuons) {
-   if(nmuons>2){
+//   std::cout << "nmuons" <<nmuons;
+   if(nmuons>=2){
        TLorentzVector mu1, mu2;
        mu1.SetPtEtaPhiM( pt[0], eta[0], phi[0], mass);
        mu2.SetPtEtaPhiM( pt[1], eta[1], phi[1], mass);
        float mass = (mu1+mu2).M();
+//       std::cout << "mass" <<mass << std::endl;
        return mass;
    } else return -1;
 }
@@ -63,8 +65,8 @@ for oldVariable in newVariables:
     ## Define DiMuon mass ##
 ROOT.gInterpreter.Declare(InvariantMass_code) ## compile invariant mass code
 ROOT.gInterpreter.Declare(InvariantMassVect_code) ## compile invariant mass code
-df_out = df_out.Define("DiMuon_mass", "InvariantMass( Muon_pt[0], Muon_eta[0], Muon_phi[0], 0.106,  Muon_pt[1], Muon_eta[1], Muon_phi[1], 0.106)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
-#df_out = df_out.Define("DiMuon_mass", "InvariantMassVect( Muon_pt, Muon_eta, Muon_phi, 0.106,  Muon_charge, MuonTight_size)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
+#df_out = df_out.Define("DiMuon_mass", "InvariantMass( Muon_pt[0], Muon_eta[0], Muon_phi[0], 0.106,  Muon_pt[1], Muon_eta[1], Muon_phi[1], 0.106)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
+df_out = df_out.Define("DiMuon_mass", "InvariantMassVect( Muon_pt, Muon_eta, Muon_phi, 0.106,  Muon_charge, MuonTight_size)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
     ###
 df_out = df_out.Define("DiJet_mass", "InvariantMass( Jet_pt[0], Jet_eta[0], Jet_phi[0], Jet_mass[0],  Jet_pt[1], Jet_eta[1], Jet_phi[1], Jet_mass[1] )")
 
