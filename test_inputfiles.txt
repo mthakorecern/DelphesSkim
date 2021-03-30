@@ -1,0 +1,1 @@
+/eos/cms/store/group/upgrade/delphes_output/YR_Delphes/Delphes342pre14/VBFHToMuMu_M125_14TeV_powheg_pythia8_200PU/VBFHToMuMu_M125_14TeV_powheg_pythia8_1.root
