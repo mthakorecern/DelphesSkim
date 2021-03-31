@@ -1,7 +1,7 @@
 import ROOT
 from sys import argv
 import os
-print("Example: python converter.py  test.root test_inputfiles.txt")
+#print("Example: python converter.py  test.root test_inputfiles.txt")
 filename, outputFileName, inputFileName = argv                      # "vbfHmm_powheg", "DYToLL_madgraphMLM"
 from variables import newVariables
 
@@ -12,8 +12,8 @@ from variables import newVariables
 with open("%s"%inputFileName, "r") as f:
     inputFileNames = list(f)
 
-#nEvents_max = -1
-nEvents_max = 100
+nEvents_max = -1
+#nEvents_max = 100
 nVariables = set()
 
 
@@ -29,19 +29,29 @@ float InvariantMass (float pt1, float eta1, float phi1, float mass1, float pt2, 
 '''
 
 InvariantMassVect_code ='''
-float InvariantMassVect (const ROOT::RVec<float>& pt, const ROOT::RVec<float>&  eta, const ROOT::RVec<float>& phi, const float mass, const ROOT::RVec<float>&  charge, int nmuons) {
-//   std::cout << "nmuons" <<nmuons;
-   if(nmuons>=2){
-       TLorentzVector mu1, mu2;
-       mu1.SetPtEtaPhiM( pt[0], eta[0], phi[0], mass);
-       mu2.SetPtEtaPhiM( pt[1], eta[1], phi[1], mass);
-       float mass = (mu1+mu2).M();
-//       std::cout << "mass" <<mass << std::endl;
-       return mass;
-   } else return -1;
+float InvariantMassVect (const ROOT::RVec<float>& pt, const ROOT::RVec<float>& eta, const ROOT::RVec<float>& phi, const float mass, const ROOT::RVec<float>& charge, int nMuons) {
+ // std::cout << "nMuons" <<nMuons;
+    float bestMass = -1;
+	if(nMuons>=2){
+	 for (int i=0; i < nMuons; i++){
+   		for (int j=0; j < nMuons; j++){
+			if(charge[i] != charge[j]){
+				TLorentzVector mu1, mu2;
+				mu1.SetPtEtaPhiM( pt[i], eta[i], phi[i], mass);
+				mu2.SetPtEtaPhiM( pt[j], eta[j], phi[j], mass);
+				float mass = (mu1+mu2).M();
+				// std::cout << "mass" <<mass << std::endl;
+
+				if(std::fabs(mass-125) < std::fabs(bestMass-125)) {
+				bestMass = mass;
+					}
+				}
+			}
+		}
+            }
+return bestMass;
 }
 '''
-
 
 print("Running sample: %s"%outputFileName)
 fnames = ROOT.std.vector('string')()
@@ -68,7 +78,7 @@ ROOT.gInterpreter.Declare(InvariantMassVect_code) ## compile invariant mass code
 
 #df_out = df_out.Define("DiMuon_mass", "InvariantMass( Muon_pt[0], Muon_eta[0], Muon_phi[0], 0.106,  Muon_pt[1], Muon_eta[1], Muon_phi[1], 0.106)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
 
-df_out = df_out.Define("DiMuon_mass", "InvariantMassVect(Muon_pt, Muon_eta, Muon_phi, 0.106,  Muon_charge, MuonTight_size)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
+df_out = df_out.Define("DiMuon_mass", "InvariantMassVect(Muon_pt, Muon_eta, Muon_phi, 0.106,  Muon_charge, nMuons)") ## define DiMuon_mass variable (0.106 GeV is the muon mass)
     
 df_out = df_out.Define("DiJet_mass", "InvariantMass(Jet_pt[0], Jet_eta[0], Jet_phi[0], Jet_mass[0],  Jet_pt[1], Jet_eta[1], Jet_phi[1], Jet_mass[1])")
 
@@ -76,16 +86,7 @@ df_out = df_out.Define("DiJetPUPPI_mass", "InvariantMass(JetPUPPI_pt[0], JetPUPP
 
 counter = df_out.Histo1D(("processedEvents", "processedEvents", 1, -100000,100000), "MuonTight_size")
 
-nVertexes = df_out.Histo1D(("nVertexes", "nVertexes", 1, -100000,100000), "Vertex_size")
-nEvents = df_out.Histo1D(("nEvents", "nEvents", 1, -100000,100000), "Event_size")
-nMET = df_out.Histo1D(("nMET", "nMET", 1, -100000,100000), "MissingET_size")
-nPhotons = df_out.Histo1D(("nPhotons", "nPhotons", 1, -100000,100000), "PhotonTight_size")
-nMuons = df_out.Histo1D(("nMuons", "nMuons", 1, -100000,100000), "MuonTight_size")
-nJets = df_out.Histo1D(("nJets", "nJets", 1, -100000,100000), "Jet_size")
-nElectrons = df_out.Histo1D(("nElectrons", "nElectrons", 1, -100000,100000), "Electron_size")
-nScalarHT = df_out.Histo1D(("nScalarHT", "nScalarHT", 1, -100000,100000), "ScalarHT_size")
-nGenJets = df_out.Histo1D(("nGenJets", "nGenJets", 1, -100000,100000), "GenJet_size")
-nJetPUPPI = df_out.Histo1D(("nJetPUPPI", "nJETPUPPI", 1, -100000,100000), "JetPUPPI_size")
+Vertex_size = df_out.Histo1D(("Vertex_size", "Vertex_size", 1, -100000,100000), "Vertex_size")
 
     ## Cuts ##
  
@@ -95,10 +96,10 @@ df_out = df_out.Filter("abs(Muon_eta[0]) < 2.8 && abs(Muon_eta[1]) < 2.8") #requ
 df_out = df_out.Filter("DiMuon_mass > 110 && DiMuon_mass < 150") #require at least two muon
 
     #df_out = df_out.Filter("Jet_size >= 2")
-df_out = df_out.Filter("Jet_pt[0] > 35 && Jet_pt[1] > 25 && JetPUPPI_pt[0] > 35 && JetPUPPI_pt[1] > 25")
-df_out = df_out.Filter("abs(Jet_eta[0]) < 4.7 && abs(Jet_eta[1]) < 4.7 && JetPUPPI_pt[0] < 4.7 && JetPUPPI_pt[1] < 4.7")
-df_out = df_out.Filter("abs(Jet_eta[0] - Jet_eta[1]) > 2.5 && abs(JetPUPPI_pt[0] - JetPUPPI_pt[1]) > 2.5")
-df_out = df_out.Filter("DiJet_mass > 400 && DiJetPUPPI_mass > 400")
+df_out = df_out.Filter("(Jet_pt[0] > 35 && Jet_pt[1] > 25) || (JetPUPPI_pt[0] > 35 && JetPUPPI_pt[1] > 25)")
+df_out = df_out.Filter("(abs(Jet_eta[0]) < 4.7 && abs(Jet_eta[1]) < 4.7) || (JetPUPPI_pt[0] < 4.7 && JetPUPPI_pt[1] < 4.7)")
+df_out = df_out.Filter("(abs(Jet_eta[0] - Jet_eta[1]) > 2.5) || (abs(JetPUPPI_pt[0] - JetPUPPI_pt[1]) > 2.5)")
+df_out = df_out.Filter("(DiJet_mass > 400) || (DiJetPUPPI_mass > 400)")
 
 counter_1 = df_out.Histo1D(("filteredEvents", "filteredEvents", 1, -100000,100000), "MuonTight_size")
 
@@ -110,16 +111,7 @@ print("Snapshot done")
 file = ROOT.TFile("%s"%outputFileName,"update")
 counter.Write()
 counter_1.Write()
-nVertexes.Write()
-nEvents.Write()
-nMET.Write()
-nPhotons.Write()
-nMuons.Write()
-nJets.Write()
-nElectrons.Write()
-nScalarHt.Write()
-nGenJets.Write()
-nJetPUPPI.Write()
+Vertex_size.Write()
 file.Close()
 
 print("Finished files: %s"%inputFileNames)

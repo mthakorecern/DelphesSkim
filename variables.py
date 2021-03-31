@@ -3,6 +3,8 @@ newVariables = {
 "Event.Number": "Event_number",
 "Event.ReadTime": "Event_readtime",
 "Event.ProcTime": "Event_proctime",
+"Event_size": "nEvents",
+
 
 #"LHCOEvent.Event": "LHCOEvent_event",
 #"LHCOEvent.Trigger": "LHCOEvent.Trigger",
@@ -35,6 +37,8 @@ newVariables = {
 "MissingET.MET": "MET_met",
 "MissingET.Eta": "MET_eta",
 "MissingET.Phi": "MET_phi",
+"MissingET_size": "nMET",
+
 
 "PhotonTight.PT": "Photon_pt",
 "PhotonTight.Eta": "Photon_eta",
@@ -49,6 +53,8 @@ newVariables = {
 "PhotonTight.SumPtNeutral": "Photon_sumptneutral",
 "PhotonTight.SumPtChargedPU": "Photon_sumptchargedpu",
 "PhotonTight.SumPt": "Photon_sumpt",
+"PhotonTight_size": "nPhotons",
+
 
 "MuonTight.PT": "Muon_pt",
 "MuonTight.Eta": "Muon_eta",
@@ -62,6 +68,7 @@ newVariables = {
 "MuonTight.SumPtNeutral": "Muon_sumptneutral",
 "MuonTight.SumPtChargedPU": "Muon_sumptchargedpu",
 "MuonTight.SumPt": "Muon_sumpt",
+"MuonTight_size": "nMuons",
 
 "Jet.PT": "Jet_pt",
 "Jet.Eta": "Jet_eta",
@@ -77,7 +84,7 @@ newVariables = {
 "Jet.EhadOverEem": "Jet_hoe",
 "Jet.NCharged": "Jet_ncharged",
 "Jet.NNeutrals": "Jet_nneutrals",
-
+"Jet_size": "nJets",
 
 "Electron.PT": "Electron_pt",
 "Electron.Eta": "Electron_eta",
@@ -91,8 +98,11 @@ newVariables = {
 "Electron.SumPtNeutral": "Electron_sumptneutral",
 "Electron.SumPtChargedPU": "Electron_sumptchargedpu",
 "Electron.SumPt": "Electron_sumpt",
+"Electron_size": "nElectrons",
+
 
 "ScalarHT.HT": "ScalarHT_ht",
+"ScalarHT_size": "nScalarHT",
 
 "GenJet.PT": "GenJet_pt",
 "GenJet.Eta": "GenJet_eta",
@@ -108,6 +118,7 @@ newVariables = {
 "GenJet.EhadOverEem": "GenJet_hoe",
 "GenJet.NCharged": "GenJet_ncharged",
 "GenJet.NNeutrals": "GenJet_nneutrals",
+"GenJet_size": "nGenJets",
 
 "JetPUPPI.PT": "JetPUPPI_pt",
 "JetPUPPI.Eta": "JetPUPPI_eta",
@@ -123,5 +134,6 @@ newVariables = {
 "JetPUPPI.EhadOverEem": "JetPUPPI_hoe",
 "JetPUPPI.NCharged": "JetPUPPI_ncharged",
 "JetPUPPI.NNeutrals": "JetPUPPI_nneutrals",
+"JetPUPPI_size": "nJetPUPPI",
 
 }
