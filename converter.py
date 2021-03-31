@@ -84,13 +84,13 @@ df_out = df_out.Define("DiJet_mass", "InvariantMass(Jet_pt[0], Jet_eta[0], Jet_p
 
 df_out = df_out.Define("DiJetPUPPI_mass", "InvariantMass(JetPUPPI_pt[0], JetPUPPI_eta[0], JetPUPPI_phi[0], JetPUPPI_mass[0],  JetPUPPI_pt[1], JetPUPPI_eta[1], JetPUPPI_phi[1], JetPUPPI_mass[1])")
 
-counter = df_out.Histo1D(("processedEvents", "processedEvents", 1, -100000,100000), "MuonTight_size")
+counter = df_out.Histo1D(("processedEvents", "processedEvents", 1, -100000,100000), "nMuons")
 
 Vertex_size = df_out.Histo1D(("Vertex_size", "Vertex_size", 1, -100000,100000), "Vertex_size")
 
     ## Cuts ##
  
-df_out = df_out.Filter("MuonTight_size >= 2") #require at least two muon
+df_out = df_out.Filter("nMuons >= 2") #require at least two muon
 df_out = df_out.Filter("Muon_pt[0] > 20 && Muon_pt[1] > 20")
 df_out = df_out.Filter("abs(Muon_eta[0]) < 2.8 && abs(Muon_eta[1]) < 2.8") #require the first muon to have pt>50 GeV
 df_out = df_out.Filter("DiMuon_mass > 110 && DiMuon_mass < 150") #require at least two muon
@@ -101,7 +101,7 @@ df_out = df_out.Filter("(abs(Jet_eta[0]) < 4.7 && abs(Jet_eta[1]) < 4.7) || (Jet
 df_out = df_out.Filter("(abs(Jet_eta[0] - Jet_eta[1]) > 2.5) || (abs(JetPUPPI_eta[0] - JetPUPPI_eta[1]) > 2.5)")
 df_out = df_out.Filter("(DiJet_mass > 400) || (DiJetPUPPI_mass > 400)")
 
-counter_1 = df_out.Histo1D(("filteredEvents", "filteredEvents", 1, -100000,100000), "MuonTight_size")
+counter_1 = df_out.Histo1D(("filteredEvents", "filteredEvents", 1, -100000,100000), "nMuons")
 
 hist = df_out.Histo1D("Muon_pt")
 print("Launch Snapshot ", outputFileName)
